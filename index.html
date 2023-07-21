@@ -4,9 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mini Project</title>
-    <script src="savetheuniverseproject.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="savetheuniverseproject.js"></script>
 </head>
 <body>
-    <main></main>
+    <main>
+        <div id="alien-ship-holder"></div>
+        <div id="alien-fighter"></div>
+        <ul id="chatbox"></ul>
+        <div id="player"></div>
+    </main>
+    <div class="button-container">
+        <button id="attack">Attack</button>
+        <button id="retreat">Retreat</button>
+        <button type="reset" onclick="window.location.reload();">Reset</button>
+    </div>
 </body>
 </html>

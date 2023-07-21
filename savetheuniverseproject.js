@@ -26,8 +26,17 @@ class Ship {
         console.log(`${this.name} has ${this.hull} hull left`)
         } else if (this.isPlayer) {
             console.log(`${this.name} has been destroyed. Game Over.`)
+            gameover = true
+            return
         } else {
             console.log('Alien Ship destroyed.')
+            if (alienShipHolder.length) {
+            console.log('Will you continue or retreat?')
+            } else {
+                depopulateAlienShip()
+            }
+            return
+            
         }
     }    
     checkAccuracy() {
@@ -41,25 +50,86 @@ class Ship {
         if (this.checkAccuracy()) { //Check to see if the opponent is destroyed
             console.log(`${this.name} attacked the ${opponent.name} for ${this.firepower}`)
             opponent.hull -= this.firepower
-            console.log(`${opponent.name} has ${opponent.hull} hull remaining`)
         } else {
             console.log(`${this.name} missed`)
         }
+        opponent.checkHull()
+        return
     }
 }
 
 //Instantiate the player ship
 const ussAssembly = new Ship('USS Assembly', 20, 5, .7, true)
-//Instantiate alien ship.
-const alienShip = new Ship('Alien Ship', Math.floor((Math.random() * 4) + 3), Math.floor((Math.random() * 3) + 2), ((Math.floor(Math.random() * 3)) + 6)/10)
+let alienShip = {} // Empty object for alien ship data to be populated from the Alien Ship Holder
+const alienShipHolder = [] //Empty Array for Alien Ships
 
-console.log(`You're in a space battle!`)
+//game over variable
+let gameover = false
 
 
-ussAssembly.attack(alienShip)
-alienShip.checkHull()
-if (alienShip.hull > 0) {
-    alienShip.attack(ussAssembly)
-    return
+//Functions for gameplay
+function populateAlienShips() { //function for populating the alien ship array
+    for (let i = 0; alienShipHolder.length < 6; i++) {
+        alienShipHolder.push(new Ship('Alien Ship', Math.floor((Math.random() * 4) + 3), Math.floor((Math.random() * 3) + 2), ((Math.floor(Math.random() * 3)) + 6)/10))
+    }
 }
+function depopulateAlienShip() {
+    console.log("There are", alienShipHolder.length, "ships left")
+    if (alienShipHolder.length > 0) {
+        alienShip = alienShipHolder.pop()
+    } else {
+        console.log("...Actually, you've beaten all the Aliens!")
+        gameover = true
+        alert("You've won!")
+    }
+}
+
+function shipBattle() {
+    while (ussAssembly.hull > 0 && alienShip.hull > 0) {
+    ussAssembly.attack(alienShip)
+    if (alienShip.hull > 0) {
+        alienShip.attack(ussAssembly)
+        }
+    }
+}
+
+//DOM Elements
+const motherShip = document.getElementById('alien-ship-holder')
+const alienFighter = document.getElementById('alien-fighter')
+const playerShip = document.getElementById('player')
+const attackBtn = document.getElementById('attack')
+const retreatBtn = document.getElementById('retreat')
+const reloadBtn = document.getElementById('reset') 
+
+//Event listeners
+
+attackBtn.addEventListener('click', (evt) => {
+    evt.preventDefault()
+    if (gameover) {
+        return alert(`Restart first, then attack again.`)
+    }
+    if (alienShip.hull > 0) {
+    shipBattle()
+    } else {
+        depopulateAlienShip()
+    }
+})
+
+retreatBtn.addEventListener('click', (evt) => {
+    evt.preventDefault()
+    if(!gameover) {
+    console.log(`You've fled like a coward and were shot down.`)
+    gameover = true
+    alert('Game Over!')
+    } else {
+    alert('Game Over!')
+    }
+})
+
+//Game
+populateAlienShips()
+depopulateAlienShip()
+
+
+
 
