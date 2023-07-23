@@ -18,6 +18,7 @@ main {
     height: 50px;
     width: 50px;
     background-color: blue;
+    animation: mymove 3s infinite;
 }
 
 #alien-fighter {
@@ -30,6 +31,7 @@ main {
     height: 50px;
     width: 150px;
     background-color: green;
+    margin-bottom: 10px;
     display: none;
 }
 
@@ -37,4 +39,15 @@ main {
     height: 300px;
     width: 80%;
     border: 2px dotted black;
+    overflow: scroll;
+}
+
+i {
+    display: block;
+}
+
+@keyframes blinker {
+    50% {
+        background-color: white;
+    }
 }
