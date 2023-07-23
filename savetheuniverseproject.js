@@ -87,7 +87,7 @@ function depopulateAlienShip() { //pulls an alien ship from the array of alien s
         alienShip = alienShipHolder.pop()
         alienFighter.style.display = 'block'
     } else {
-        console.log("...You've actually beaten all the Aliens!")
+        chatLogArray.push("...You've actually beaten all the Aliens!")
         gameover = true
         alert("You've won!")
         motherShip.style.display = 'none'
